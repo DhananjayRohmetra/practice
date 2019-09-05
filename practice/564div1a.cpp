@@ -2,7 +2,7 @@
 using namespace std;
 int main()
 {
-     freopen("input.txt", "r", stdin);
+    //freopen("input.txt", "r", stdin);
     int n, ans = 0;
     cin >> n;
     int arr[n + 1], brr[n + 1];
@@ -14,10 +14,24 @@ int main()
     for (int i = 1; i <= n; i++)
     {
         cin >> brr[i];
-        if(brr[i] == 1)
-            idx=i;
-
         findb[brr[i]]++;
+    }
+    int sus;
+    for (int i = 1; i <= n; i++)
+    {
+        if (findb[i] == 1)
+        {
+            sus = i;
+            break;
+        }
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        if (brr[i] == sus)
+        {
+            idx = i;
+            break;
+        }
     }
     int s = n;
     int flag = 0, nwidx;
@@ -39,50 +53,68 @@ int main()
             else
                 break;
         }
-        if (i == n+1)
+        if (i == n + 1)
         {
+            cout << "by3";
             int u = 0;
-            int res=y;
+            int res = y;
             for (i = 1; i <= idx - 1;)
             {
-                
                 if (i == 1)
                 {
+                    if (brr[i] == 0)
+                    {
+                        i++;
+                    }
                     if (findb[y] == 0)
                     {
                         u = 1;
                         y++;
+                        if (y == n + 1)
+                            break;
                     }
-                    else if(brr[i] == y)
+                    else if (brr[i] == y && y != res)
                     {
+                        u = 1;
                         y++;
                         i++;
+                        if (y == n + 1)
+                            break;
                     }
                     else
                         break;
                 }
-                    
-                
                 else if (u == 1)
                 {
-                        if (findb[y] == 0 )
-                        {
-                            y++;
-                        }
-                        if(brr[i] == y)
-                        {
-                            i++;
-                            y++;
-                        }
-                        else if(findb[y] != 0 && brr[i] != y)
+                    if (brr[i] == 0)
+                    {
+                        i++;
+                    }
+                    if (findb[y] == 0 && y <= n)
+                    {
+                        y++;
+                        if (y == n + 1)
+                            break;
+                    }
+                    if (brr[i] == y)
+                    {
+                        i++;
+                        y++;
+                        if (y == n + 1)
+                            break;
+                    }
+                    else if ((findb[y] != 0 && brr[i] != y) || y == n + 1)
                         break;
                 }
             }
-            
-            if(y == n+1)
-                ans=idx-1;
+            if (y == n + 1)
+                ans = idx - 1;
             else
-                ans = idx + n;               
+                ans = idx + n;
+        }
+        else
+        {
+            ans = idx + n;
         }
     }
     else
